@@ -47,15 +47,15 @@
     <input type="checkbox" id="isDeleted" th:field="*{student.deleted}" />
   </div>
   <h2>受講生コース</h2>
-  <div th:each="course, iterStat : ${studentsDetail.studentsCourse}">
-    <input type="hidden" th:field="*{studentsCourse[__${iterStat.index}__].courseID}" />
+  <div th:each="course, iterStat : ${studentsDetail.studentsCourses}">
+    <input type="hidden" th:field="*{studentsCourses[__${iterStat.index}__].courseID}" />
     <div>
       <label for="courseID">コースID:</label>
-      <input type="text" id="courseID" th:value="*{studentsCourse[__${iterStat.index}__].courseID}" readonly="readonly" />
+      <input type="text" id="courseID" th:value="*{studentsCourses[__${iterStat.index}__].courseID}" readonly="readonly" />
     </div>
     <div>
       <label for="courseName">コース名:</label>
-      <input type="text" id="courseName" th:field="*{studentsCourse[__${iterStat.index}__].courseName}" required />
+      <input type="text" id="courseName" th:field="*{studentsCourses[__${iterStat.index}__].courseName}" required />
     </div>
   </div>
   <div>

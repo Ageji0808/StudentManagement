@@ -1,7 +1,7 @@
 package raisetech.student.management.Controller.converter;
 
 import raisetech.student.management.data.Student;
-import raisetech.student.management.data.StudentsCourse;
+import raisetech.student.management.data.StudentsCourses;
 import raisetech.student.management.domain.StudentsDetail;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +12,16 @@ import org.springframework.stereotype.Component;
 public class StudentsConverter {
 
   public List<StudentsDetail> convertStudentsDetails(List<Student> studentList,
-      List<StudentsCourse> studentsCourses) {
+      List<StudentsCourses> studentsCourses) {
     List<StudentsDetail> studentsDetails = new ArrayList<>();
     studentList.forEach(student -> {
       StudentsDetail studentsDetail = new StudentsDetail();
       studentsDetail.setStudent(student);
 
-      List<StudentsCourse> convertStudentsCourses = studentsCourses.stream()
+      List<StudentsCourses> convertStudentsCourses = studentsCourses.stream()
           .filter(studentCourses -> student.getId().equals(studentCourses.getStudentID()))
           .collect(Collectors.toList());
-      studentsDetail.setStudentsCourseList(convertStudentsCourses);
+      studentsDetail.setStudentsCoursesList(convertStudentsCourses);
       studentsDetails.add(studentsDetail);
     });
     return studentsDetails;

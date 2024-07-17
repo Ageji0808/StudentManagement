@@ -1,10 +1,11 @@
 package raisetech.student.management.repository;
 
 
+import jakarta.validation.Valid;
 import raisetech.student.management.data.Student;
 
 import java.util.List;import org.apache.ibatis.annotations.Mapper;
-import raisetech.student.management.data.StudentsCourse;
+import raisetech.student.management.data.StudentsCourses;
 
 
 @Mapper
@@ -12,29 +13,28 @@ import raisetech.student.management.data.StudentsCourse;
 public interface StudentsRepository {
 
 
-  // 削除されていない受講生のみを取得するクエリに変更
   List<Student> getAllStudents();
 
 
   Student findStudentById(String id);
 
 
-  void registerStudent(Student student);
+  void registerStudent(@Valid Student student);
 
   ;
 
   void updateStudent(Student student);
 
 
-  List<StudentsCourse> getAllStudentsCourses();
+  List<StudentsCourses> getAllStudentsCourses();
 
 
-  List<StudentsCourse> findStudentsCourseById(String studentID);
+  List<StudentsCourses> findStudentsCourseById(String studentID);
 
-  void registerStudentsCourses(StudentsCourse studentsCourse);
+  void registerStudentsCourses(StudentsCourses studentsCourses);
 
 
-  void updateStudentsCourses(StudentsCourse studentsCourse);
+  void updateStudentsCourses(StudentsCourses studentsCourses);
 }
 
 

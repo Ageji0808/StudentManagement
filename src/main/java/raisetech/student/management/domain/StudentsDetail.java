@@ -1,11 +1,11 @@
 package raisetech.student.management.domain;
 
+import raisetech.student.management.data.StudentsCourses;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import raisetech.student.management.data.Student;
-import raisetech.student.management.data.StudentsCourse;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +18,7 @@ public class StudentsDetail {
   @Valid
   public Student student;
   @Valid
-  public List<StudentsCourse> studentsCourseList;
+  public List<StudentsCourses> studentsCoursesList;
 
 
 

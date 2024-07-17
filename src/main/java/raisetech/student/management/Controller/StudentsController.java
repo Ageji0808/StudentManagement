@@ -1,5 +1,6 @@
 package raisetech.student.management.Controller;
 
+import raisetech.student.management.Controller.converter.StudentsConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import raisetech.student.management.Controller.converter.StudentsConverter;
 import raisetech.student.management.domain.StudentsDetail;
 import raisetech.student.management.exception.TestException;
 import raisetech.student.management.service.StudentsService;
