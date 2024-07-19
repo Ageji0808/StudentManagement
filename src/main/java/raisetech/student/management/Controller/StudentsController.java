@@ -1,5 +1,7 @@
 package raisetech.student.management.Controller;
 
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PutMapping;
 import raisetech.student.management.Controller.converter.StudentsConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -31,21 +33,26 @@ public class StudentsController {
     this.studentsService = studentsService;
 
   }
+
   @Operation(summary = "一覧検索", description = "受講生の一覧を検索します")
   @GetMapping("/student")
   public List<StudentsDetail> getStudentsList() {
 
     return studentsService.searchStudentList();
   }
+
   @Operation(summary = "受講生検索", description = "受講生を検索します")
   @GetMapping("/students/{id}")
-  public StudentsDetail getStudent(@PathVariable @NotBlank @Pattern(regexp = "^\\d+$") @Size(min = 1,max = 3) String id) {
+  public StudentsDetail getStudent(
+      @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") @Size(min = 1, max = 3) String id) {
 
     return studentsService.findStudentById(id);
   }
+
   @Operation(summary = "受講生登録", description = "受講生を登録します")
   @PostMapping("/registerStudent")
-  public ResponseEntity<StudentsDetail> registerStudent(@RequestBody @Valid StudentsDetail studentsDetail
+  public ResponseEntity<StudentsDetail> registerStudent(
+      @RequestBody @Valid StudentsDetail studentsDetail
   ) {
     StudentsDetail responseStudentsDetail = studentsService.registerStudent(studentsDetail);
 
@@ -53,11 +60,12 @@ public class StudentsController {
   }
 
   @Operation(summary = "受講生更新", description = "受講生を更新します")
-  @PostMapping("/updateStudent")
+  @PutMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentsDetail studentsDetail) {
-    studentsService.updateStudent(studentsDetail.getStudent());
+    studentsService.updateStudent(studentsDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
   }
+
   @Operation(summary = "例外処理テスト", description = "例外処理をテストします")
 
   @GetMapping("/testException")

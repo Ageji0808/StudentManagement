@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 public class StudentsConverter {
 
   public List<StudentsDetail> convertStudentsDetails(List<Student> studentList,
-      List<StudentsCourses> studentsCourses) {
+      List<StudentsCourses> studentsCoursesList) {
     List<StudentsDetail> studentsDetails = new ArrayList<>();
     studentList.forEach(student -> {
       StudentsDetail studentsDetail = new StudentsDetail();
       studentsDetail.setStudent(student);
 
-      List<StudentsCourses> convertStudentsCourses = studentsCourses.stream()
+      List<StudentsCourses> convertStudentsCourses = studentsCoursesList.stream()
           .filter(studentCourses -> student.getId().equals(studentCourses.getStudentID()))
           .collect(Collectors.toList());
       studentsDetail.setStudentsCoursesList(convertStudentsCourses);

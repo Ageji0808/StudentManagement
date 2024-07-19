@@ -14,7 +14,7 @@ import lombok.Setter;
 
 public class Student {
 
-  @Pattern(regexp = "^\\d+$")
+  @Pattern(regexp = "^\\d+$", message = "数字のみを入力してください。")
   private String id;
   @NotBlank
   private String name;

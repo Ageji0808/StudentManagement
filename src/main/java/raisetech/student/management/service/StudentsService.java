@@ -28,18 +28,19 @@ public class StudentsService {
 
   @Transactional
   public StudentsDetail registerStudent(StudentsDetail studentsDetail) {
-    studentsRepository.registerStudent(studentsDetail.getStudent());
+    Student student = studentsDetail.getStudent();
+    studentsRepository.registerStudent(student);
     studentsDetail.getStudentsCoursesList().forEach(studentsCourses -> {
-      initStudentsCourse(studentsDetail, studentsCourses);
+      initStudentsCourse(studentsCourses, student.getId());
       studentsRepository.registerStudentsCourses(studentsCourses);
     });
     return studentsDetail;
   }
 
-  private static void initStudentsCourse(StudentsDetail studentsDetail,
-      StudentsCourses studentsCourses) {
-    studentsCourses.setStudentID(studentsDetail.getStudent().getId());
+  void initStudentsCourse(StudentsCourses studentsCourses,String id) {
+
     LocalDate now = LocalDate.now();
+    studentsCourses.setStudentID(id);
     studentsCourses.setStartDate(now);
     studentsCourses.setEndDate(now.plusYears(1));
   }
@@ -52,26 +53,20 @@ public class StudentsService {
 
   public StudentsDetail findStudentById(String id) {
     Student student = studentsRepository.findStudentById(id);
-    List<StudentsCourses> studentsCourses = studentsRepository.findStudentsCourseById(
+    List<StudentsCourses> studentsCoursesList = studentsRepository.findStudentsCourseById(
         student.getId());
 
-    return new StudentsDetail(student, studentsCourses);
+    return new StudentsDetail(student, studentsCoursesList);
   }
 
 
-  public List<StudentsCourses> searchStudentsCoursesList() {
-    return studentsRepository.getAllStudentsCourses();
-  }
 
   @Transactional
-  public void updateStudent(Student student) {
-    studentsRepository.updateStudent(student);
+  public void updateStudent(StudentsDetail studentsDetail) {
+    studentsRepository.updateStudent(studentsDetail.getStudent());
+    studentsDetail.getStudentsCoursesList().forEach(studentsCourses -> studentsRepository.updateStudentsCourses(studentsCourses));
   }
 
-  @Transactional
-  public void updateStudentsCourses(StudentsCourses studentsCourses) {
-    studentsRepository.updateStudentsCourses(studentsCourses);
-  }
 
 
 }
