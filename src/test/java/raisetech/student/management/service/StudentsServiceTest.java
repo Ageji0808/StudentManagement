@@ -65,7 +65,7 @@ class StudentsServiceTest {
 
     verify(repository, times(1)).findStudentById(id);
     verify(repository, times(1)).findStudentsCourseById(id);
-    Assertions.assertEquals(expected.getStudent(), actual.getStudent().getId());
+    Assertions.assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
   }
 
   @Test
