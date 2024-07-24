@@ -1,4 +1,4 @@
-package raisetech.student.management.Controller;
+package raisetech.student.management.controller;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PutMapping;
