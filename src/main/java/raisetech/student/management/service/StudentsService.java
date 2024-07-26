@@ -1,6 +1,6 @@
 package raisetech.student.management.service;
 
-import raisetech.student.management.Controller.converter.StudentsConverter;
+import raisetech.student.management.controller.converter.StudentsConverter;
 import raisetech.student.management.repository.StudentsRepository;
 import java.time.LocalDate;
 import raisetech.student.management.data.Student;

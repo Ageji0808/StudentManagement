@@ -1,4 +1,4 @@
-package raisetech.student.management.Controller.converter;
+package raisetech.student.management.controller.converter;
 
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentsCourses;

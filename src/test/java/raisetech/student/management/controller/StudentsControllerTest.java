@@ -1,4 +1,4 @@
-package raisetech.student.management.Controller;
+package raisetech.student.management.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -83,31 +84,32 @@ class StudentsControllerTest {
   @Test
   void 受講生詳細の登録ができて空で帰ってくること() throws Exception {
     mockmvc.perform(post("/registerStudent")
-            .contentType(MediaType.APPLICATION_JSON).content(
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(
                 """
-                                
-                            {"student":{
-                      "name":"上路啓太",
-                          "hurigana":"アゲジケイタ",
-                          "nickname":"ケータロス",
-                          "mailaddress":"test@example.com",
-                          "area":"青森県",
-                          "age":24,
-                          "sex":"男性",
-                          "remark":""
-                    },
-                    "studentsCoursesList": [
-                    {
-
-                      "courseName":"Java"
-
-                    }
-                        ]
-                                }"""
+                {"student":{
+                  "name":"上路啓太",
+                  "hurigana":"アゲジケイタ",
+                  "nickname":"ケータロス",
+                  "mailaddress":"test@example.com",
+                  "area":"青森県",
+                  "age":24,
+                  "sex":"男性",
+                  "remark":""
+                },
+                "studentsCoursesList": [
+                  {"courseName":"Java"}
+                ]}
+                """
             ))
+
         .andExpect(status().isOk());
-    verify(service, times(1)).registerStudent(any());
+
+
+
+  verify(service, times(1)).registerStudent(any());
   }
+
   @Test
   void 受講生詳細の更新ができて空で帰ってくること() throws Exception {
     mockmvc.perform(put("/updateStudent")
@@ -136,13 +138,13 @@ class StudentsControllerTest {
         .andExpect(status().isOk());
     verify(service, times(1)).updateStudent(any());
   }
+
   @Test
-  void 受講生詳細の例外APIが実行できてステータスが400でかえってくること()throws Exception{
+  void 受講生詳細の例外APIが実行できてステータスが400でかえってくること() throws Exception {
     mockmvc.perform(get("/testException"))
         .andExpect(status().is4xxClientError())
         .andExpect(content().string("これはテスト例外です。"));
   }
-
 
 
 }

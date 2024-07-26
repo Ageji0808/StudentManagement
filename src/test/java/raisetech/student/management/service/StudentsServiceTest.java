@@ -15,7 +15,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import raisetech.student.management.Controller.converter.StudentsConverter;
+
+
+import raisetech.student.management.controller.converter.StudentsConverter;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentsCourses;
 import raisetech.student.management.domain.StudentsDetail;

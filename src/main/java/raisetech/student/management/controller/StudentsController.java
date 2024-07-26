@@ -1,8 +1,8 @@
 package raisetech.student.management.controller;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PutMapping;
-import raisetech.student.management.Controller.converter.StudentsConverter;
+import raisetech.student.management.controller.converter.StudentsConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
