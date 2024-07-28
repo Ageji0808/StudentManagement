@@ -39,7 +39,9 @@ class StudentsControllerTest {
   void 受講生詳細の一覧検索ができて空のリストが帰ってくること() throws Exception {
 
     mockmvc.perform(get("/student"))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().json("[]"));
+
     verify(service, times(1)).searchStudentList();
   }
 
@@ -77,7 +79,9 @@ class StudentsControllerTest {
   void 受講生検索ができて空で帰ってくること() throws Exception {
     String id = "1";
     mockmvc.perform(get("/students/{id}", id))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+     .andExpect(content().string(""));
+
     verify(service, times(1)).findStudentById(id);
   }
 
@@ -87,23 +91,12 @@ class StudentsControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
-                {"student":{
-                  "name":"上路啓太",
-                  "hurigana":"アゲジケイタ",
-                  "nickname":"ケータロス",
-                  "mailaddress":"test@example.com",
-                  "area":"青森県",
-                  "age":24,
-                  "sex":"男性",
-                  "remark":""
-                },
-                "studentsCoursesList": [
-                  {"courseName":"Java"}
-                ]}
+                {"student":{"name":"上路啓太","hurigana":"アゲジケイタ","nickname":"ケータロス","mailaddress":"test@example.com","area":"青森県","age":24,"sex":"男性","remark":""},"studentsCoursesList":[{"courseName":"Java"}]}
                 """
             ))
+        .andExpect(status().isOk())
+        .andExpect(content().string(""));
 
-        .andExpect(status().isOk());
 
 
 
