@@ -1,10 +1,12 @@
 package raisetech.student.management.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +33,14 @@ class StudentsRepositoryTest {
 
     Student student = sut.findStudentById(id);
     assertThat(student).isNotNull();
-    System.out.println(String.join(", ",
-        "Name: " + student.getName(),
-        "Hurigana: " + student.getHurigana(),
-        "Nickname: " + student.getNickname(),
-        "Mailaddress: " + student.getMailaddress(),
-        "Area: " + student.getArea(),
-        "Age: " + student.getAge(),
-        "Sex: " + student.getSex(),
-        "Remark: " + student.getRemark(),
-        "Deleted: " + student.isDeleted()
-    ));
+    assertEquals("永田浩紀", student.getName());
+    assertEquals("ながたひろき", student.getHurigana());
+    assertEquals("ヒロ", student.getNickname());
+    assertEquals("hiroki8833yyy@yahoo.co.jp", student.getMailaddress());
+    assertEquals("品川区", student.getArea());
+    assertEquals(32, student.getAge());
+    assertEquals("男性", student.getSex());
+
   }
 
   @Test
@@ -79,17 +78,16 @@ class StudentsRepositoryTest {
     sut.updateStudent(updateStudent);
 
     Student updatedStudent = sut.findStudentById(id);
-    System.out.println(String.join(", ",
-        "Name: " + updatedStudent.getName(),
-        "Hurigana: " + updatedStudent.getHurigana(),
-        "Nickname: " + updatedStudent.getNickname(),
-        "Mailaddress: " + updatedStudent.getMailaddress(),
-        "Area: " + updatedStudent.getArea(),
-        "Age: " + updatedStudent.getAge(),
-        "Sex: " + updatedStudent.getSex(),
-        "Remark: " + updatedStudent.getRemark(),
-        "Deleted: " + updatedStudent.isDeleted()
-    ));
+    assertEquals("上路啓太", updatedStudent.getName());
+    assertEquals("アゲジケイタ", updatedStudent.getHurigana());
+    assertEquals("ケータ", updatedStudent.getNickname());
+    assertEquals("new@example.co.jp", updatedStudent.getMailaddress());
+    assertEquals("青森県", updatedStudent.getArea());
+    assertEquals(24, updatedStudent.getAge());
+    assertEquals("男性", updatedStudent.getSex());
+    assertEquals("", updatedStudent.getRemark());
+    assertEquals(false, updatedStudent.isDeleted());
+
   }
 
   @Test
@@ -100,17 +98,22 @@ class StudentsRepositoryTest {
 
   @Test
   void 受講生コースの個人検索が行えること() {
-
+    String courseId = "1";
     String studentId = "1";
+    List<StudentsCourses> searchStudentsCourse = sut.findStudentsCourseById(studentId);
+    StudentsCourses courses = searchStudentsCourse.stream()
+        .filter(course -> course.getCourseID().equals(courseId))
+        .findFirst()
+        .orElse(null);
+    assertThat(courses).isNotNull();
 
-    List<StudentsCourses> studentsCourses = sut.findStudentsCourseById(studentId);
-    assertThat(studentsCourses).isNotNull();
-    studentsCourses.forEach(course -> System.out.println(String.join(", ",
-        "Course Name: " + course.getCourseName(),
-        "Start Date: " + course.getStartDate(),
-        "End Date: " + course.getEndDate()
-    )));
-  }
+
+
+      assertEquals("公務員", courses.getCourseName());
+      assertEquals("2024-06-11", courses.getStartDate().toString());
+      assertEquals("2025-09-11", courses.getEndDate().toString());
+    }
+
   @Test
   void 受講生のコース登録が行えること() {
 
@@ -136,12 +139,8 @@ class StudentsRepositoryTest {
         .orElse(null);
     courses.setCourseName("English");
     sut.updateStudentsCourses(courses);
-    System.out.println(String.join(", ",
-        "Course ID: " + courses.getCourseID(),
-        "Course Name: " + courses.getCourseName(),
-        "Start Date: " + courses.getStartDate(),
-        "End Date: " + courses.getEndDate()
-    ));
+    assertEquals("English", courses.getCourseName());
+
 
   }
 }
