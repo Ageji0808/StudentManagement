@@ -21,34 +21,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@Validated
-@RestController
-public class StudentsController {
 
-  private StudentsService studentsService;
-  private StudentsConverter converter;
+  @Validated
+  @RestController
+  public class StudentsController {
 
-  @Autowired
-  public StudentsController(StudentsService studentsService) {
-    this.studentsService = studentsService;
+    private StudentsService studentsService;
+    private StudentsConverter converter;
 
-  }
+    @Autowired
+    public StudentsController(StudentsService studentsService) {
+      this.studentsService = studentsService;
 
-  @Operation(summary = "一覧検索", description = "受講生の一覧を検索します")
-  @GetMapping("/student")
-  public List<StudentsDetail> getStudentsList() {
+    }
 
-    return studentsService.searchStudentList();
-  }
+    @Operation(summary = "一覧検索", description = "受講生の一覧を検索します")
+    @GetMapping("/student")
+    public List<StudentsDetail> getStudentsList() {
 
-  @Operation(summary = "受講生検索", description = "受講生を検索します")
-  @GetMapping("/students/{id}")
-  public StudentsDetail getStudent(
-      @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") @Size(min = 1, max = 3) String id) {
+      return studentsService.searchStudentList();
+    }
 
-    return studentsService.findStudentById(id);
-  }
+    @Operation(summary = "受講生検索", description = "受講生を検索します")
+    @GetMapping("/students/{id}")
+    public StudentsDetail getStudent(
+        @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") @Size(min = 1, max = 3) String id) {
 
+      return studentsService.findStudentById(id);
+    }
   @Operation(summary = "受講生登録", description = "受講生を登録します")
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentsDetail> registerStudent(
@@ -64,6 +64,13 @@ public class StudentsController {
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentsDetail studentsDetail) {
     studentsService.updateStudent(studentsDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
+  }
+
+  @Operation(summary = "仮申し込みを本申し込みに変更", description = "特定のコースの仮申し込みを本申し込みに変更します")
+  @PutMapping("/updateToFullApplication/{courseId}")
+  public ResponseEntity<String> updateToFullApplication(@PathVariable String courseId) {
+    studentsService.updateToFullApplication(courseId);
+    return ResponseEntity.ok("仮申し込みを本申し込みに変更しました。");
   }
 
   @Operation(summary = "例外処理テスト", description = "例外処理をテストします")
