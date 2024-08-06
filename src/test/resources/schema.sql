@@ -19,5 +19,7 @@ CREATE TABLE IF NOT EXISTS studentscourses
      student_id INT NOT NULL,
      course_name VARCHAR(50),
      start_date  VARCHAR(50),
-     end_date  VARCHAR(50)
+     end_date  VARCHAR(50),
+     status VARCHAR(20),
+     full_application_flag boolean
 );

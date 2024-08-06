@@ -138,6 +138,16 @@ class StudentsControllerTest {
         .andExpect(status().is4xxClientError())
         .andExpect(content().string("これはテスト例外です。"));
   }
+  @Test
+  void 仮申し込みから本申し込みへの変更ができること() throws Exception {
+    String courseId = "1";
+    mockmvc.perform(put("/updateToFullApplication/{courseId}", courseId))
+        .andExpect(status().isOk())
+        .andExpect(content().string("仮申し込みを本申し込みに変更しました。"));
+
+    verify(service, times(1)).updateToFullApplication(courseId);
+  }
+
 
 
 }
