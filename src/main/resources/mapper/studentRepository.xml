@@ -29,12 +29,35 @@
   </select>
 
   <insert id="registerStudentsCourses" parameterType="raisetech.student.management.data.StudentsCourses" useGeneratedKeys="true" keyProperty="courseID">
-    INSERT INTO studentsCourses (student_id, course_name, start_date, end_date)
-    VALUES (#{studentID}, #{courseName}, #{startDate}, #{endDate})
+    INSERT INTO studentsCourses (student_id, course_name, start_date, end_date, status, full_application_flag )
+    VALUES (#{studentID}, #{courseName}, #{startDate}, #{endDate}, #{status}, false)
   </insert>
 
   <update id="updateStudentsCourses" parameterType="raisetech.student.management.data.StudentsCourses">
-    UPDATE studentsCourses SET course_name = #{courseName} WHERE course_id = #{courseID}
+    UPDATE studentsCourses SET course_name = #{courseName},status = #{status},
+    full_application_flag = #{fullApplicationFlag} WHERE course_id = #{courseID}
   </update>
 
+  <select id="findCourseById" resultType="raisetech.student.management.data.StudentsCourses">
+    SELECT * FROM studentsCourses WHERE course_id = #{courseID}
+  </select>
+
+  <!-- 新しいステータスとフルアプリケーションフラグを更新するためのSQL -->
+  <update id="updateStatusAndFlag" parameterType="java.util.Map">
+    UPDATE studentsCourses
+    SET status = CASE
+    WHEN full_application_flag = FALSE THEN status
+    WHEN end_date &lt; CURDATE() THEN '受講終了'
+    WHEN start_date &lt;= CURDATE() AND CURDATE() &lt;= end_date THEN '受講中'
+    WHEN start_date &gt; CURDATE() THEN '本申し込み'
+    ELSE status
+    END,
+    full_application_flag = CASE
+    WHEN full_application_flag = FALSE AND start_date &lt;= CURDATE() THEN full_application_flag
+    WHEN end_date &lt; CURDATE() THEN TRUE
+    WHEN start_date &lt;= CURDATE() AND CURDATE() &lt;= end_date THEN TRUE
+    ELSE full_application_flag
+    END
+    WHERE status IN ('仮申し込み', '本申し込み', '受講中', '受講終了')
+  </update>
 </mapper>

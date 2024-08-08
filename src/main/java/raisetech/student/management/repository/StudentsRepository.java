@@ -34,8 +34,12 @@ public interface StudentsRepository {
 
   void registerStudentsCourses(StudentsCourses studentsCourses);
 
+  StudentsCourses findCourseById(String courseId);
+
 
   void updateStudentsCourses(StudentsCourses studentsCourses);
+
+
 }
 
 

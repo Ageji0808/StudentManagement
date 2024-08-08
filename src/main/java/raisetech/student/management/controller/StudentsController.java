@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class StudentsController {
 
   private StudentsService studentsService;
-  private StudentsConverter converter;
+
 
   @Autowired
   public StudentsController(StudentsService studentsService) {
@@ -35,7 +35,7 @@ public class StudentsController {
   }
 
   @Operation(summary = "一覧検索", description = "受講生の一覧を検索します")
-  @GetMapping("/student")
+  @GetMapping("/students")
   public List<StudentsDetail> getStudentsList() {
 
     return studentsService.searchStudentList();
@@ -64,6 +64,13 @@ public class StudentsController {
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentsDetail studentsDetail) {
     studentsService.updateStudent(studentsDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
+  }
+
+  @Operation(summary = "仮申し込みを本申し込みに変更", description = "特定のコースの仮申し込みを本申し込みに変更します")
+  @PutMapping("/updateStatus/{courseId}")
+  public ResponseEntity<String> updateToFullApplication(@PathVariable String courseId) {
+    studentsService.updateToFullApplication(courseId);
+    return ResponseEntity.ok("仮申し込みを本申し込みに変更しました。");
   }
 
   @Operation(summary = "例外処理テスト", description = "例外処理をテストします")

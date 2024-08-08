@@ -2,11 +2,11 @@ package raisetech.student.management.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +122,7 @@ class StudentsRepositoryTest {
     newCourse.setCourseName("jazz");
     newCourse.setStartDate(LocalDate.of(2024, 7, 28));
     newCourse.setEndDate(LocalDate.of(2025, 7, 28));
+    newCourse.setStatus("仮申し込み");
     sut.registerStudentsCourses(newCourse);
     List<StudentsCourses> actual = sut.getAllStudentsCourses();
     assertThat(actual.size()).isEqualTo(11);
@@ -143,4 +144,26 @@ class StudentsRepositoryTest {
 
 
   }
+  @Test
+  void 受講生コースの検索が行えること() {
+
+    String courseId = "2";
+
+    StudentsCourses studentsCourses = sut.findCourseById(courseId);
+    assertThat(studentsCourses).isNotNull();
+    assertEquals("Java", studentsCourses.getCourseName());
+    assertEquals("2023-11-26", studentsCourses.getStartDate().toString());
+    assertEquals("2024-02-26", studentsCourses.getEndDate().toString());
+
+  }
+  @Test
+  void 存在しない受講生コースの検索でnullが返されること() {
+    String nullCourseId = "999"; // 存在しないIDを指定
+
+    StudentsCourses studentsCourses = sut.findCourseById(nullCourseId);
+
+    // 存在しないIDの場合、nullが返されることを確認
+    assertNull(studentsCourses);
+  }
+
 }

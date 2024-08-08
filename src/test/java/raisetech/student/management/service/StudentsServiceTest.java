@@ -93,8 +93,8 @@ class StudentsServiceTest {
 
     sut.initStudentsCourse(studentsCourses, student.getId());
     Assertions.assertEquals("1", studentsCourses.getStudentID());
-    Assertions.assertEquals(LocalDate.now(), studentsCourses.getStartDate());
-    Assertions.assertEquals(LocalDate.now().plusYears(1), studentsCourses.getEndDate());
+    Assertions.assertEquals(LocalDate.now().plusDays(10), studentsCourses.getStartDate());
+    Assertions.assertEquals(studentsCourses.getStartDate().plusYears(1), studentsCourses.getEndDate());
   }
 
   @Test
@@ -106,8 +106,24 @@ class StudentsServiceTest {
     sut.updateStudent(studentsDetail);
     verify(repository, times(1)).updateStudent(student);
     verify(repository, times(1)).updateStudentsCourses(studentsCourses);
-
-
   }
+
+  @Test
+  void 仮申し込みから本申し込みへの更新_リポジトリの処理が適切に呼び出せていること() {
+    String courseId = "1";
+    StudentsCourses studentsCourses = new StudentsCourses();
+    studentsCourses.setCourseID(courseId);
+    studentsCourses.setStatus("仮申し込み");
+
+    when(repository.findCourseById(courseId)).thenReturn(studentsCourses);
+
+    sut.updateToFullApplication(courseId);
+
+    verify(repository, times(1)).findCourseById(courseId);
+    verify(repository, times(1)).updateStudentsCourses(studentsCourses);
+    Assertions.assertEquals("本申し込み", studentsCourses.getStatus());
+    Assertions.assertTrue(studentsCourses.isFullApplicationFlag());
+  }
+
 
 }

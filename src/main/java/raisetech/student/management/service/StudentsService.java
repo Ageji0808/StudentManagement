@@ -1,5 +1,7 @@
 package raisetech.student.management.service;
 
+import java.util.HashMap;
+import java.util.Map;
 import raisetech.student.management.controller.converter.StudentsConverter;
 import raisetech.student.management.repository.StudentsRepository;
 import java.time.LocalDate;
@@ -37,17 +39,20 @@ public class StudentsService {
     return studentsDetail;
   }
 
-  void initStudentsCourse(StudentsCourses studentsCourses,String id) {
+  void initStudentsCourse(StudentsCourses studentsCourses, String id) {
 
     LocalDate now = LocalDate.now();
     studentsCourses.setStudentID(id);
-    studentsCourses.setStartDate(now);
-    studentsCourses.setEndDate(now.plusYears(1));
+    studentsCourses.setStartDate(now.plusDays(10));
+    studentsCourses.setEndDate(studentsCourses.getStartDate().plusYears(1));
+    studentsCourses.setFullApplicationFlag(false);
+    studentsCourses.updateStatus();
   }
 
   public List<StudentsDetail> searchStudentList() {
     List<Student> studentList = studentsRepository.getAllStudents();
     List<StudentsCourses> studentsCoursesList = studentsRepository.getAllStudentsCourses();
+    studentsCoursesList.forEach(StudentsCourses::updateStatus);
     return studentsConverter.convertStudentsDetails(studentList, studentsCoursesList);
   }
 
@@ -55,19 +60,31 @@ public class StudentsService {
     Student student = studentsRepository.findStudentById(id);
     List<StudentsCourses> studentsCoursesList = studentsRepository.findStudentsCourseById(
         student.getId());
+    studentsCoursesList.forEach(StudentsCourses::updateStatus);
 
     return new StudentsDetail(student, studentsCoursesList);
   }
 
 
-
   @Transactional
   public void updateStudent(StudentsDetail studentsDetail) {
     studentsRepository.updateStudent(studentsDetail.getStudent());
-    studentsDetail.getStudentsCoursesList().forEach(studentsCourses -> studentsRepository.updateStudentsCourses(studentsCourses));
+    studentsDetail.getStudentsCoursesList().forEach(studentsCourses -> {
+          studentsCourses.updateStatus();
+          studentsRepository.updateStudentsCourses(studentsCourses);
+        }
+    );
+
   }
 
-
+  @Transactional
+  public void updateToFullApplication(String courseId) {
+    StudentsCourses studentsCourses = studentsRepository.findCourseById(courseId);
+    if (studentsCourses != null && "仮申し込み".equals(studentsCourses.getStatus())) {
+      studentsCourses.setStatus("本申し込み");
+      studentsCourses.setFullApplicationFlag(true);
+      studentsRepository.updateStudentsCourses(studentsCourses);
+    }
+  }
 
 }
-
