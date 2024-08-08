@@ -2,6 +2,7 @@ package raisetech.student.management.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 import java.time.LocalDate;
@@ -154,6 +155,15 @@ class StudentsRepositoryTest {
     assertEquals("2023-11-26", studentsCourses.getStartDate().toString());
     assertEquals("2024-02-26", studentsCourses.getEndDate().toString());
 
+  }
+  @Test
+  void 存在しない受講生コースの検索でnullが返されること() {
+    String nullCourseId = "999"; // 存在しないIDを指定
+
+    StudentsCourses studentsCourses = sut.findCourseById(nullCourseId);
+
+    // 存在しないIDの場合、nullが返されることを確認
+    assertNull(studentsCourses);
   }
 
 }

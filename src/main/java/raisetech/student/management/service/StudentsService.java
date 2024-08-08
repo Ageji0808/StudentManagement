@@ -39,7 +39,7 @@ public class StudentsService {
     return studentsDetail;
   }
 
-  void initStudentsCourse(StudentsCourses studentsCourses,String id) {
+  void initStudentsCourse(StudentsCourses studentsCourses, String id) {
 
     LocalDate now = LocalDate.now();
     studentsCourses.setStudentID(id);
@@ -66,15 +66,17 @@ public class StudentsService {
   }
 
 
-
   @Transactional
   public void updateStudent(StudentsDetail studentsDetail) {
     studentsRepository.updateStudent(studentsDetail.getStudent());
     studentsDetail.getStudentsCoursesList().forEach(studentsCourses -> {
-      studentsCourses.updateStatus();
-      studentsRepository.updateStudentsCourses(studentsCourses);  });
+          studentsCourses.updateStatus();
+          studentsRepository.updateStudentsCourses(studentsCourses);
+        }
+    );
 
   }
+
   @Transactional
   public void updateToFullApplication(String courseId) {
     StudentsCourses studentsCourses = studentsRepository.findCourseById(courseId);

@@ -2,7 +2,6 @@ package raisetech.student.management.repository;
 
 
 import jakarta.validation.Valid;
-import java.util.Map;
 import raisetech.student.management.data.Student;
 
 import java.util.List;import org.apache.ibatis.annotations.Mapper;
@@ -39,7 +38,6 @@ public interface StudentsRepository {
 
 
   void updateStudentsCourses(StudentsCourses studentsCourses);
-
 
 
 }
