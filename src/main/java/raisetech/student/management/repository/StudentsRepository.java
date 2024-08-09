@@ -18,6 +18,11 @@ public interface StudentsRepository {
 
 
   Student findStudentById(String id);
+  Student  findStudentByName(String Name);
+  List<Student>  findStudentByMailaddress(String mailaddress);
+  List<Student>  findStudentByArea(String area);
+  List<Student> findStudentByAge(int age);
+  List<Student> findStudentBySex(String Sex);
 
 
   void registerStudent(@Valid Student student);

@@ -2,6 +2,7 @@ package raisetech.student.management.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import raisetech.student.management.controller.converter.StudentsConverter;
 import raisetech.student.management.repository.StudentsRepository;
 import java.time.LocalDate;
@@ -64,6 +65,60 @@ public class StudentsService {
 
     return new StudentsDetail(student, studentsCoursesList);
   }
+
+  public StudentsDetail findStudentByName(String name) {
+    Student student = studentsRepository.findStudentByName(name);
+    List<StudentsCourses> studentsCoursesList = studentsRepository.findStudentsCourseById(
+        student.getId());
+    studentsCoursesList.forEach(StudentsCourses::updateStatus);
+
+    return new StudentsDetail(student, studentsCoursesList);
+  }
+  public List<StudentsDetail> findStudentByMailaddress(String mailaddress) {
+    List<Student> studentsList = studentsRepository.findStudentByMailaddress(mailaddress);
+    return studentsList.stream().map(student -> {
+
+      List<StudentsCourses> studentsCoursesList = studentsRepository.findStudentsCourseById(student.getId());
+      studentsCoursesList.forEach(StudentsCourses::updateStatus);
+
+      return new StudentsDetail(student, studentsCoursesList);
+    }).collect(Collectors.toList());
+  }
+
+  public List<StudentsDetail> findStudentByArea(String area) {
+    List<Student> studentsList = studentsRepository.findStudentByArea(area);
+    return studentsList.stream().map(student -> {
+
+      List<StudentsCourses> studentsCoursesList = studentsRepository.findStudentsCourseById(student.getId());
+      studentsCoursesList.forEach(StudentsCourses::updateStatus);
+
+      return new StudentsDetail(student, studentsCoursesList);
+    }).collect(Collectors.toList());
+  }
+
+  public List<StudentsDetail> findStudentByAge(int age) {
+    List<Student> studentsList = studentsRepository.findStudentByAge(age);
+    return studentsList.stream().map(student -> {
+
+      List<StudentsCourses> studentsCoursesList = studentsRepository.findStudentsCourseById(student.getId());
+      studentsCoursesList.forEach(StudentsCourses::updateStatus);
+
+      return new StudentsDetail(student, studentsCoursesList);
+    }).collect(Collectors.toList());
+  }
+
+  public List<StudentsDetail> findStudentBySex(String sex) {
+    List<Student> studentsList = studentsRepository.findStudentBySex(sex);
+    return studentsList.stream().map(student -> {
+
+      List<StudentsCourses> studentsCoursesList = studentsRepository.findStudentsCourseById(student.getId());
+      studentsCoursesList.forEach(StudentsCourses::updateStatus);
+
+      return new StudentsDetail(student, studentsCoursesList);
+    }).collect(Collectors.toList());
+  }
+
+
 
 
   @Transactional
