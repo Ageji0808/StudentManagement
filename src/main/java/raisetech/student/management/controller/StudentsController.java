@@ -1,8 +1,7 @@
 package raisetech.student.management.controller;
 
-import org.springframework.http.MediaType;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.PutMapping;
-import raisetech.student.management.controller.converter.StudentsConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -41,13 +40,57 @@ public class StudentsController {
     return studentsService.searchStudentList();
   }
 
-  @Operation(summary = "受講生検索", description = "受講生を検索します")
-  @GetMapping("/students/{id}")
-  public StudentsDetail getStudent(
+  @Operation(summary = "IDによる受講生検索", description = "IDを用いて受講生を検索します")
+  @GetMapping("/studentsById/{id}")
+  public StudentsDetail getStudentByID(
       @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") @Size(min = 1, max = 3) String id) {
 
     return studentsService.findStudentById(id);
   }
+
+  @Operation(summary = "名前による受講生検索", description = "名前を用いて受講生を検索します")
+  @GetMapping("/studentsByName/{name}")
+  public StudentsDetail getStudentByName(
+      @PathVariable @NotBlank  String name) {
+
+    return studentsService.findStudentByName(name);
+  }
+  @Operation(summary = "Eメールによる受講生検索", description = "Eメールを用いて受講生を検索します")
+  @GetMapping("/studentsByMailaddress/{mailaddress}")
+  public List<StudentsDetail> getStudentByMailaddress(
+      @PathVariable @NotBlank  String mailaddress) {
+
+    return studentsService.findStudentByMailaddress(mailaddress);
+  }
+  @Operation(summary = "地域による受講生検索", description = "地域を用いて受講生を検索します")
+  @GetMapping("/studentsByArea/{area}")
+  public List<StudentsDetail> getStudentByArea(
+      @PathVariable @NotBlank  String area) {
+
+    return studentsService.findStudentByArea(area);
+  }
+  @Operation(summary = "年齢による受講生検索", description = "年齢を用いて受講生を検索します")
+  @GetMapping("/studentsByAge/{age}")
+  public List<StudentsDetail> getStudentByAge(
+      @PathVariable @NotNull int age) {
+
+    return studentsService.findStudentByAge(age);
+  }
+  @Operation(summary = "性別による受講生検索", description = "性別を用いて受講生を検索します")
+  @GetMapping("/studentsBySex/{sex}")
+  public List<StudentsDetail> getStudentBySex(
+      @PathVariable @NotBlank  String sex) {
+
+    return studentsService.findStudentBySex(sex);
+  }
+
+
+
+
+
+
+
+
 
   @Operation(summary = "受講生登録", description = "受講生を登録します")
   @PostMapping("/registerStudent")

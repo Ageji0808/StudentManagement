@@ -4,7 +4,7 @@ VALUES('上路啓太','あげじけいた','ケータロス','test@example.com',
       ('佐伯智子','さえきともこ','ともちゃん','Tomo639659ggdua@gmail.com','台東区',17,'女性'),
       ('牧野聡','まきのさとし','砂利ボーイ','pikatyu6633@hddujzh.jp','葛飾区',20,'男性'),
       ('長谷川里香','はせがわりか','りかちゃん','RikaRika66339@gajdhvoa.ac.jp','新宿区',22,'女性'),
-      ('町田千尋','まちだちひろ','ちっひー','senntochihiro52736d@fish3ksi.com','横浜市',19,'回答なし');
+      ('町田千尋','まちだちひろ','ちっひー','senntochihiro52736d@fish3ksi.com','青森県',19,'回答なし');
 
 INSERT INTO studentscourses (student_id,course_name,start_date,end_date)
 VALUES(1,'公務員','2024-06-11','2025-09-11'),

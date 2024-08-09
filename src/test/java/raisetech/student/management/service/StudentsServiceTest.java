@@ -1,5 +1,6 @@
 package raisetech.student.management.service;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -7,8 +8,10 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +58,7 @@ class StudentsServiceTest {
   }
 
   @Test
-  void 受講生の検索_リポジトリの処理が適切に呼び出せていること() {
+  void 受講生のIDによる検索_リポジトリの処理が適切に呼び出せていること() {
     String id = "1";
     Student student = new Student();
     student.setId(id);
@@ -69,6 +72,130 @@ class StudentsServiceTest {
     verify(repository, times(1)).findStudentsCourseById(id);
     Assertions.assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
   }
+
+  @Test
+  void 受講生の名前による検索_リポジトリの処理が適切に呼び出せていること() {
+    String name = "永田浩紀";
+    Student student = new Student();
+    student.setName(name);
+
+    when(repository.findStudentByName(name)).thenReturn(student);
+    when(repository.findStudentsCourseById(student.getId())).thenReturn(new ArrayList<>());
+    StudentsDetail expected = new StudentsDetail(student, new ArrayList<>());
+    StudentsDetail actual = sut.findStudentByName(name);
+
+    verify(repository, times(1)).findStudentByName(name);
+    verify(repository, times(1)).findStudentsCourseById(student.getId());
+    Assertions.assertEquals(expected.getStudent().getName(), actual.getStudent().getName());
+  }
+
+  @Test
+  void 受講生のEメールによる検索_リポジトリの処理が適切に呼び出せていること() {
+    String mailaddress = "hiroki8833yyy@yahoo.co.jp";
+    Student student1 = new Student();
+    student1.setMailaddress(mailaddress);
+
+    List<Student> students = Arrays.asList(student1);
+
+    when(repository.findStudentByMailaddress(mailaddress)).thenReturn(students);
+    when(repository.findStudentsCourseById(student1.getId())).thenReturn(new ArrayList<>());
+
+    List<StudentsDetail> expectedDetails = students.stream()
+        .map(student -> new StudentsDetail(student, new ArrayList<>()))
+        .collect(Collectors.toList());
+
+    List<StudentsDetail> actualDetails = sut.findStudentByMailaddress(mailaddress);
+
+    verify(repository, times(1)).findStudentByMailaddress(mailaddress);
+    verify(repository, times(1)).findStudentsCourseById(student1.getId());
+
+    for (int i = 0; i < expectedDetails.size(); i++) {
+      Assertions.assertEquals(expectedDetails.get(i).getStudent().getMailaddress(),
+          actualDetails.get(i).getStudent().getMailaddress());
+    }
+  }
+  @Test
+  void 受講生の地域による検索_リポジトリの処理が適切に呼び出せていること() {
+    String area = "青森県";
+    Student student1 = new Student();
+    student1.setArea(area);
+    student1.setId("1");
+
+    Student student2 = new Student();
+    student2.setArea(area);
+    student2.setId("6");
+
+    List<Student> students = Arrays.asList(student1, student2);
+
+    when(repository.findStudentByArea(area)).thenReturn(students);
+    when(repository.findStudentsCourseById(student1.getId())).thenReturn(new ArrayList<>());
+
+    List<StudentsDetail> expectedDetails = students.stream()
+        .map(student -> new StudentsDetail(student, new ArrayList<>()))
+        .collect(Collectors.toList());
+
+    List<StudentsDetail> actualDetails = sut.findStudentByArea(area);
+
+    verify(repository, times(1)).findStudentByArea(area);
+    verify(repository, times(2)).findStudentsCourseById(anyString());
+
+    for (int i = 0; i < expectedDetails.size(); i++) {
+      Assertions.assertEquals(expectedDetails.get(i).getStudent().getMailaddress(),
+          actualDetails.get(i).getStudent().getMailaddress());
+    }
+  }
+  @Test
+  void 受講生の年齢による検索_リポジトリの処理が適切に呼び出せていること() {
+    int age = 32;
+    Student student1 = new Student();
+    student1.setAge(age);
+
+    List<Student> students = Arrays.asList(student1);
+
+    when(repository.findStudentByAge(age)).thenReturn(students);
+    when(repository.findStudentsCourseById(student1.getId())).thenReturn(new ArrayList<>());
+
+    List<StudentsDetail> expectedDetails = students.stream()
+        .map(student -> new StudentsDetail(student, new ArrayList<>()))
+        .collect(Collectors.toList());
+
+    List<StudentsDetail> actualDetails = sut.findStudentByAge(age);
+
+    verify(repository, times(1)).findStudentByAge(age);
+    verify(repository, times(1)).findStudentsCourseById(student1.getId());
+
+    for (int i = 0; i < expectedDetails.size(); i++) {
+      Assertions.assertEquals(expectedDetails.get(i).getStudent().getAge(),
+          actualDetails.get(i).getStudent().getAge());
+    }
+  }
+  @Test
+  void 受講生の性別による検索_リポジトリの処理が適切に呼び出せていること() {
+    String sex = "回答なし";
+    Student student1 = new Student();
+    student1.setSex(sex);
+
+    List<Student> students = Arrays.asList(student1);
+
+    when(repository.findStudentBySex(sex)).thenReturn(students);
+    when(repository.findStudentsCourseById(student1.getId())).thenReturn(new ArrayList<>());
+
+    List<StudentsDetail> expectedDetails = students.stream()
+        .map(student -> new StudentsDetail(student, new ArrayList<>()))
+        .collect(Collectors.toList());
+
+    List<StudentsDetail> actualDetails = sut.findStudentBySex(sex);
+
+    verify(repository, times(1)).findStudentBySex(sex);
+    verify(repository, times(1)).findStudentsCourseById(student1.getId());
+
+    for (int i = 0; i < expectedDetails.size(); i++) {
+      Assertions.assertEquals(expectedDetails.get(i).getStudent().getSex(),
+          actualDetails.get(i).getStudent().getSex());
+    }
+  }
+
+
 
   @Test
   void 受講生詳細の登録_リポジトリの処理が適切に呼び出せていること() {
@@ -85,7 +212,7 @@ class StudentsServiceTest {
   }
 
   @Test
-  void 受講生詳細の登録_初期化処理が行われること(){
+  void 受講生詳細の登録_初期化処理が行われること() {
     String id = "1";
     Student student = new Student();
     student.setId(id);
@@ -94,7 +221,8 @@ class StudentsServiceTest {
     sut.initStudentsCourse(studentsCourses, student.getId());
     Assertions.assertEquals("1", studentsCourses.getStudentID());
     Assertions.assertEquals(LocalDate.now().plusDays(10), studentsCourses.getStartDate());
-    Assertions.assertEquals(studentsCourses.getStartDate().plusYears(1), studentsCourses.getEndDate());
+    Assertions.assertEquals(studentsCourses.getStartDate().plusYears(1),
+        studentsCourses.getEndDate());
   }
 
   @Test
