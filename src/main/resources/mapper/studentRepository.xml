@@ -10,6 +10,24 @@
     FROM student
     WHERE id = #{id}
   </select>
+
+  <select id="findStudentByName" resultType="raisetech.student.management.data.Student">
+    SELECT * FROM student WHERE name = #{name}
+  </select>
+
+  <select id="findStudentByMailaddress" resultType="raisetech.student.management.data.Student">
+    SELECT * FROM student WHERE mailaddress = #{mailaddress}
+  </select>
+  <select id="findStudentByArea" resultType="raisetech.student.management.data.Student">
+    SELECT * FROM student WHERE area = #{area}
+  </select>
+  <select id="findStudentByAge" resultType="raisetech.student.management.data.Student">
+    SELECT * FROM student WHERE age = #{age}
+  </select>
+  <select id="findStudentBySex" resultType="raisetech.student.management.data.Student">
+    SELECT * FROM student WHERE sex = #{sex}
+  </select>
+
   <insert id="registerStudent" parameterType="raisetech.student.management.data.Student" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO student (name, hurigana, nickname, mailaddress, area, age, sex, remark, is_deleted)
     VALUES (#{name}, #{hurigana}, #{nickname}, #{mailaddress}, #{area}, #{age}, #{sex}, #{remark}, false)

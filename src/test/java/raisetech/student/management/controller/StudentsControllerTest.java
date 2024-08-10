@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import java.util.ArrayList;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,13 +78,58 @@ class StudentsControllerTest {
   }
 
   @Test
-  void 受講生検索ができて空で帰ってくること() throws Exception {
+  void 受講生のID検索ができて空で帰ってくること() throws Exception {
     String id = "1";
-    mockmvc.perform(get("/students/{id}", id))
+    mockmvc.perform(get("/studentsById/{id}", id))
         .andExpect(status().isOk())
      .andExpect(content().string(""));
 
     verify(service, times(1)).findStudentById(id);
+  }
+  @Test
+  void 受講生の名前検索ができて空で帰ってくること() throws Exception {
+    String name = "上路啓太";
+    mockmvc.perform(get("/studentsByName/{name}", name))
+        .andExpect(status().isOk())
+        .andExpect(content().string(""));
+
+    verify(service, times(1)).findStudentByName(name);
+  }
+  @Test
+  void 受講生のEメール検索ができて空で帰ってくること() throws Exception {
+    String mailaddress = "hiroki8833yyy@yahoo.co.jp";
+    mockmvc.perform(get("/studentsByMailaddress/{mailaddress}", mailaddress))
+        .andExpect(status().isOk())
+        .andExpect(content().string("[]"));
+
+    verify(service, times(1)).findStudentByMailaddress(mailaddress);
+  }
+  @Test
+  void 受講生の地域検索ができて空で帰ってくること() throws Exception {
+    String area = "青森県";
+    mockmvc.perform(get("/studentsByArea/{area}", area))
+        .andExpect(status().isOk())
+        .andExpect(content().string("[]"));
+
+    verify(service, times(1)).findStudentByArea(area);
+  }
+  @Test
+  void 受講生の年齢検索ができて空で帰ってくること() throws Exception {
+    int age = 24;
+    mockmvc.perform(get("/studentsByAge/{age}", age))
+        .andExpect(status().isOk())
+        .andExpect(content().json("[]"));
+
+    verify(service, times(1)).findStudentByAge(age);
+  }
+  @Test
+  void 受講生の性別検索ができて空で帰ってくること() throws Exception {
+    String sex = "回答なし";
+    mockmvc.perform(get("/studentsBySex/{sex}", sex))
+        .andExpect(status().isOk())
+        .andExpect(content().string("[]"));
+
+    verify(service, times(1)).findStudentBySex(sex);
   }
 
   @Test

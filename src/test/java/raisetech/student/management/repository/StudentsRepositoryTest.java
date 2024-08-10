@@ -27,7 +27,7 @@ class StudentsRepositoryTest {
   }
 
   @Test
-  void 受講生の個人検索が行えること() {
+  void 受講生のIDによる個人検索が行えること() {
 
     String id = "2";
 
@@ -42,6 +42,110 @@ class StudentsRepositoryTest {
     assertEquals("男性", student.getSex());
 
   }
+  @Test
+  void 受講生の名前による個人検索が行えること() {
+
+    String name = "永田浩紀";
+
+    Student student = sut.findStudentByName(name);
+    assertThat(student).isNotNull();
+    assertEquals("永田浩紀", student.getName());
+    assertEquals("ながたひろき", student.getHurigana());
+    assertEquals("ヒロ", student.getNickname());
+    assertEquals("hiroki8833yyy@yahoo.co.jp", student.getMailaddress());
+    assertEquals("品川区", student.getArea());
+    assertEquals(32, student.getAge());
+    assertEquals("男性", student.getSex());
+
+  }
+  @Test
+  void Eメールによる受講生検索が行えること() {
+
+    String mailaddress = "hiroki8833yyy@yahoo.co.jp";
+    List<Student> studentsList = sut.findStudentByMailaddress(mailaddress);
+
+    assertThat(studentsList).isNotNull();
+    assertEquals(1, studentsList.size());
+
+    Student student1 = studentsList.get(0);
+    assertEquals("永田浩紀", student1.getName());
+    assertEquals("ながたひろき", student1.getHurigana());
+    assertEquals("ヒロ", student1.getNickname());
+    assertEquals("hiroki8833yyy@yahoo.co.jp", student1.getMailaddress());
+    assertEquals("品川区", student1.getArea());
+    assertEquals(32, student1.getAge());
+    assertEquals("男性", student1.getSex());;
+
+
+  }
+
+
+  @Test
+  void 地域による複数の受講生検索が行えること() {
+
+    String area = "青森県";
+    List<Student> studentsList = sut.findStudentByArea(area);
+
+    assertThat(studentsList).isNotNull();
+    assertEquals(2, studentsList.size());
+
+    Student student1 = studentsList.get(0);
+    assertEquals("上路啓太", student1.getName());
+    assertEquals("あげじけいた", student1.getHurigana());
+    assertEquals("ケータロス", student1.getNickname());
+    assertEquals("test@example.com", student1.getMailaddress());
+    assertEquals("青森県", student1.getArea());
+    assertEquals(24, student1.getAge());
+    assertEquals("男性", student1.getSex());
+
+    Student student2 = studentsList.get(1);
+    assertEquals("町田千尋", student2.getName());
+    assertEquals("まちだちひろ", student2.getHurigana());
+    assertEquals("ちっひー", student2.getNickname());
+    assertEquals("senntochihiro52736d@fish3ksi.com", student2.getMailaddress());
+    assertEquals("青森県", student2.getArea());
+    assertEquals(19, student2.getAge());
+    assertEquals("回答なし", student2.getSex());
+  }
+  @Test
+  void 年齢による受講生検索が行えること() {
+
+    int age = 32;
+    List<Student> studentsList = sut.findStudentByAge(age);
+
+    assertThat(studentsList).isNotNull();
+    assertEquals(1, studentsList.size());
+
+    Student student1 = studentsList.get(0);
+    assertEquals("永田浩紀", student1.getName());
+    assertEquals("ながたひろき", student1.getHurigana());
+    assertEquals("ヒロ", student1.getNickname());
+    assertEquals("hiroki8833yyy@yahoo.co.jp", student1.getMailaddress());
+    assertEquals("品川区", student1.getArea());
+    assertEquals(32, student1.getAge());
+    assertEquals("男性", student1.getSex());;
+  }
+  @Test
+  void 性別による受講生検索が行えること() {
+
+    String sex= "回答なし";
+    List<Student> studentsList = sut.findStudentBySex(sex);
+
+    assertThat(studentsList).isNotNull();
+    assertEquals(1, studentsList.size());
+
+    Student student1 = studentsList.get(0);
+    assertEquals("町田千尋", student1.getName());
+    assertEquals("まちだちひろ", student1.getHurigana());
+    assertEquals("ちっひー", student1.getNickname());
+    assertEquals("senntochihiro52736d@fish3ksi.com", student1.getMailaddress());
+    assertEquals("青森県", student1.getArea());
+    assertEquals(19, student1.getAge());
+    assertEquals("回答なし", student1.getSex());;
+
+
+  }
+
 
   @Test
   void 受講生の登録が行えること() {
